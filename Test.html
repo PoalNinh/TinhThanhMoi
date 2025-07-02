@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra cứu địa chỉ cũ sang mới</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8 animate-fade-in">
+            <h1 class="text-4xl font-bold text-gray-800 mb-4">
+                🏠 Tra cứu địa chỉ hành chính
+            </h1>
+            <p class="text-gray-600 text-lg">Chuyển đổi từ địa chỉ cũ sang địa chỉ mới</p>
+        </div>
+
+        <!-- Main Form -->
+        <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden animate-fade-in">
+            <!-- Form Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6">
+                <h2 class="text-white text-xl font-semibold text-center">Nhập địa chỉ cũ</h2>
+                <div class="flex justify-center mt-4">
+                    <div class="flex bg-white/20 rounded-full p-1">
+                        <button class="px-4 py-2 bg-white text-blue-600 rounded-full font-medium transition-all">
+                            Địa chỉ cũ
+                        </button>
+                        <button class="px-4 py-2 text-white rounded-full font-medium">
+                            Địa chỉ mới
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Body -->
+            <div class="p-6 space-y-6">
+                <!-- Province -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">
+                        1. Tỉnh/Thành phố <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select id="provinceSelect" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none">
+                            <option value="">-- Chọn tỉnh/thành phố --</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- District -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">
+                        2. Quận/Huyện <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select id="districtSelect" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none" disabled>
+                            <option value="">-- Chọn quận/huyện --</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ward -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">
+                        3. Phường/Xã <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        <select id="wardSelect" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none" disabled>
+                            <option value="">-- Chọn phường/xã --</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Village -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">
+                        4. Thôn/Xóm (Không bắt buộc)
+                    </label>
+                    <div class="relative">
+                        <select id="villageSelect" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all appearance-none" disabled>
+                            <option value="">-- Chọn thôn/xóm --</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail Address -->
+                <div class="space-y-2">
+                    <label class="block text-sm font-semibold text-gray-700">
+                        5. Địa chỉ chi tiết (số nhà, đường)
+                    </label>
+                    <textarea id="detailAddress" rows="3" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none" placeholder="Nhập số nhà, tên đường..."></textarea>
+                </div>
+
+                <!-- Current Address Display -->
+                <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg border-l-4 border-blue-500">
+                    <div class="flex items-center mb-2">
+                        <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span class="font-semibold text-gray-700">Địa chỉ cũ đầy đủ:</span>
+                    </div>
+                    <p id="currentAddress" class="text-gray-600 italic">Vui lòng chọn địa chỉ...</p>
+                </div>
+
+                <!-- Convert Button -->
+                <button id="convertBtn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transform hover:scale-105 transition-all duration-200 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none" disabled>
+                    <span class="flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                        </svg>
+                        Chuyển đổi địa chỉ
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading -->
+        <div id="loadingDiv" class="hidden max-w-2xl mx-auto mt-6">
+            <div class="bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                <p class="text-gray-600 font-medium">Đang chuyển đổi địa chỉ...</p>
+            </div>
+        </div>
+
+        <!-- Result -->
+        <div id="resultDiv" class="hidden max-w-2xl mx-auto mt-6 animate-slide-up">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="bg-gradient-to-r from-green-500 to-blue-500 p-6">
+                    <h3 class="text-white text-xl font-semibold text-center flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Kết quả chuyển đổi
+                    </h3>
+                </div>
+                <div class="p-6 space-y-6">
+                    <!-- Old Address -->
+                    <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-400">
+                        <h4 class="font-semibold text-red-800 mb-2 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Địa chỉ cũ
+                        </h4>
+                        <p id="oldAddressResult" class="text-red-700"></p>
+                    </div>
+
+                    <!-- New Address -->
+                    <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-400">
+                        <h4 class="font-semibold text-green-800 mb-2 flex items-center">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                            Địa chỉ mới
+                        </h4>
+                        <p id="newAddressResult" class="text-green-700"></p>
+                    </div>
+
+                    <!-- Copy Button -->
+                    <button id="copyBtn" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-medium transition-all duration-200 flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        Sao chép địa chỉ mới
+                    </button>
+
+                    <!-- Reset Button -->
+                    <button id="resetBtn" class="w-full border-2 border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white py-3 px-4 rounded-lg font-medium transition-all duration-200">
+                        Tra cứu địa chỉ khác
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API Configuration
+        const API_BASE = 'https://address-converter.io.vn/api';
+        
+        // DOM Elements
+        const provinceSelect = document.getElementById('provinceSelect');
+        const districtSelect = document.getElementById('districtSelect');
+        const wardSelect = document.getElementById('wardSelect');
+        const villageSelect = document.getElementById('villageSelect');
+        const detailAddress = document.getElementById('detailAddress');
+        const currentAddress = document.getElementById('currentAddress');
+        const convertBtn = document.getElementById('convertBtn');
+        const loadingDiv = document.getElementById('loadingDiv');
+        const resultDiv = document.getElementById('resultDiv');
+        const oldAddressResult = document.getElementById('oldAddressResult');
+        const newAddressResult = document.getElementById('newAddressResult');
+        const copyBtn = document.getElementById('copyBtn');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // State
+        let selectedData = {
+            province: null,
+            district: null,
+            ward: null,
+            village: null
+        };
+
+        // Initialize
+        loadProvinces();
+
+        // Load provinces
+        async function loadProvinces() {
+            try {
+                const response = await fetch(`${API_BASE}/province-info?provinceCode=all`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    provinceSelect.innerHTML = '<option value="">-- Chọn tỉnh/thành phố --</option>';
+                    data.data.provinces.forEach(province => {
+                        const option = document.createElement('option');
+                        option.value = province.code;
+                        option.textContent = province.name;
+                        provinceSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading provinces:', error);
+                showToast('Lỗi khi tải danh sách tỉnh/thành phố', 'error');
+            }
+        }
+
+        // Load districts
+        async function loadDistricts(provinceCode) {
+            try {
+                districtSelect.innerHTML = '<option value="">Đang tải...</option>';
+                districtSelect.disabled = true;
+                
+                const response = await fetch(`${API_BASE}/districts?provinceCode=${provinceCode}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    districtSelect.innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+                    data.data.forEach(district => {
+                        const option = document.createElement('option');
+                        option.value = district.code;
+                        option.textContent = district.name;
+                        districtSelect.appendChild(option);
+                    });
+                    districtSelect.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error loading districts:', error);
+                districtSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
+                showToast('Lỗi khi tải danh sách quận/huyện', 'error');
+            }
+        }
+
+        // Load wards
+        async function loadWards(provinceCode, districtCode) {
+            try {
+                wardSelect.innerHTML = '<option value="">Đang tải...</option>';
+                wardSelect.disabled = true;
+                
+                const response = await fetch(`${API_BASE}/wards?provinceCode=${provinceCode}&districtCode=${districtCode}&status=old`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+                    data.data.forEach(ward => {
+                        const option = document.createElement('option');
+                        option.value = ward.code;
+                        option.textContent = ward.name;
+                        wardSelect.appendChild(option);
+                    });
+                    wardSelect.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error loading wards:', error);
+                wardSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
+                showToast('Lỗi khi tải danh sách phường/xã', 'error');
+            }
+        }
+
+        // Load villages
+        async function loadVillages(provinceCode, districtCode, wardCode) {
+            try {
+                villageSelect.innerHTML = '<option value="">Đang tải...</option>';
+                villageSelect.disabled = true;
+                
+                const response = await fetch(`${API_BASE}/villages?status=old&provinceCode=${provinceCode}&wardCode=${wardCode}&districtCode=${districtCode}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    villageSelect.innerHTML = '<option value="">-- Chọn thôn/xóm --</option>';
+                    data.data.forEach(village => {
+                        const option = document.createElement('option');
+                        option.value = village.code;
+                        option.textContent = village.name;
+                        villageSelect.appendChild(option);
+                    });
+                    villageSelect.disabled = false;
+                }
+            } catch (error) {
+                console.error('Error loading villages:', error);
+                villageSelect.innerHTML = '<option value="">Lỗi tải dữ liệu</option>';
+                showToast('Lỗi khi tải danh sách thôn/xóm', 'error');
+            }
+        }
+
+        // Event listeners
+        provinceSelect.addEventListener('change', function() {
+            const provinceCode = this.value;
+            selectedData.province = {
+                code: provinceCode,
+                name: this.options[this.selectedIndex].text
+            };
+            
+            // Reset lower levels
+            districtSelect.innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+            districtSelect.disabled = !provinceCode;
+            wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+            wardSelect.disabled = true;
+            villageSelect.innerHTML = '<option value="">-- Chọn thôn/xóm --</option>';
+            villageSelect.disabled = true;
+            
+            selectedData.district = null;
+            selectedData.ward = null;
+            selectedData.village = null;
+            
+            if (provinceCode) {
+                loadDistricts(provinceCode);
+            }
+            
+            updateCurrentAddress();
+            updateConvertButton();
+        });
+
+        districtSelect.addEventListener('change', function() {
+            const districtCode = this.value;
+            selectedData.district = {
+                code: districtCode,
+                name: this.options[this.selectedIndex].text
+            };
+            
+            // Reset lower levels
+            wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+            wardSelect.disabled = !districtCode;
+            villageSelect.innerHTML = '<option value="">-- Chọn thôn/xóm --</option>';
+            villageSelect.disabled = true;
+            
+            selectedData.ward = null;
+            selectedData.village = null;
+            
+            if (districtCode && selectedData.province) {
+                loadWards(selectedData.province.code, districtCode);
+            }
+            
+            updateCurrentAddress();
+            updateConvertButton();
+        });
+
+        wardSelect.addEventListener('change', function() {
+            const wardCode = this.value;
+            selectedData.ward = {
+                code: wardCode,
+                name: this.options[this.selectedIndex].text
+            };
+            
+            // Reset villages
+            villageSelect.innerHTML = '<option value="">-- Chọn thôn/xóm --</option>';
+            villageSelect.disabled = !wardCode;
+            selectedData.village = null;
+            
+            if (wardCode && selectedData.province && selectedData.district) {
+                loadVillages(selectedData.province.code, selectedData.district.code, wardCode);
+            }
+            
+            updateCurrentAddress();
+            updateConvertButton();
+        });
+
+        villageSelect.addEventListener('change', function() {
+            const villageCode = this.value;
+            selectedData.village = villageCode ? {
+                code: villageCode,
+                name: this.options[this.selectedIndex].text
+            } : null;
+            
+            updateCurrentAddress();
+        });
+
+        detailAddress.addEventListener('input', updateCurrentAddress);
+
+        // Update current address display
+        function updateCurrentAddress() {
+            const parts = [];
+            
+            if (detailAddress.value.trim()) {
+                parts.push(detailAddress.value.trim());
+            }
+            
+            if (selectedData.village) {
+                parts.push(selectedData.village.name);
+            }
+            
+            if (selectedData.ward) {
+                parts.push(selectedData.ward.name);
+            }
+            
+            if (selectedData.district) {
+                parts.push(selectedData.district.name);
+            }
+            
+            if (selectedData.province) {
+                parts.push(selectedData.province.name);
+            }
+            
+            currentAddress.textContent = parts.length > 0 ? parts.join(', ') : 'Vui lòng chọn địa chỉ...';
+        }
+
+        // Update convert button state
+        function updateConvertButton() {
+            const canConvert = selectedData.province && selectedData.district && selectedData.ward;
+            convertBtn.disabled = !canConvert;
+        }
+
+        // Convert address
+        convertBtn.addEventListener('click', async function() {
+            if (!selectedData.province || !selectedData.district || !selectedData.ward) {
+                showToast('Vui lòng chọn đầy đủ tỉnh, huyện, xã', 'error');
+                return;
+            }
+            
+            const requestData = {
+                direction: "old-to-new",
+                provinceCode: selectedData.province.code,
+                districtCode: selectedData.district.code,
+                wardCode: selectedData.ward.code,
+                detailAddress: detailAddress.value.trim()
+            };
+            
+            try {
+                loadingDiv.classList.remove('hidden');
+                resultDiv.classList.add('hidden');
+                
+                const response = await fetch(`${API_BASE}/convert-address`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    oldAddressResult.textContent = data.data.oldAddress.fullAddress;
+                    newAddressResult.textContent = data.data.newAddress.fullAddress;
+                    
+                    loadingDiv.classList.add('hidden');
+                    resultDiv.classList.remove('hidden');
+                    
+                    // Scroll to result
+                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    throw new Error('Conversion failed');
+                }
+            } catch (error) {
+                console.error('Error converting address:', error);
+                loadingDiv.classList.add('hidden');
+                showToast('Lỗi khi chuyển đổi địa chỉ. Vui lòng thử lại.', 'error');
+            }
+        });
+
+        // Copy address
+        copyBtn.addEventListener('click', function() {
+            const newAddress = newAddressResult.textContent;
+            navigator.clipboard.writeText(newAddress).then(function() {
+                showToast('Đã sao chép địa chỉ mới!', 'success');
+                copyBtn.innerHTML = `
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Đã sao chép!
+                `;
+                setTimeout(() => {
+                    copyBtn.innerHTML = `
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        Sao chép địa chỉ mới
+                    `;
+                }, 2000);
+            }).catch(function() {
+                showToast('Không thể sao chép. Vui lòng chọn và copy thủ công.', 'error');
+            });
+        });
+
+        // Reset form
+        resetBtn.addEventListener('click', function() {
+            provinceSelect.value = '';
+            districtSelect.innerHTML = '<option value="">-- Chọn quận/huyện --</option>';
+            districtSelect.disabled = true;
+            wardSelect.innerHTML = '<option value="">-- Chọn phường/xã --</option>';
+            wardSelect.disabled = true;
+            villageSelect.innerHTML = '<option value="">-- Chọn thôn/xóm --</option>';
+            villageSelect.disabled = true;
+            detailAddress.value = '';
+            
+            selectedData = {
+                province: null,
+                district: null,
+                ward: null,
+                village: null
+            };
+            
+            updateCurrentAddress();
+            updateConvertButton();                                                                                                  
+            
+            resultDiv.classList.add('hidden');
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg text-white font-medium transform transition-all duration-300 translate-x-full`;
+            
+            if (type === 'success') {
+                toast.classList.add('bg-green-500');
+            } else if (type === 'error') {
+                toast.classList.add('bg-red-500');
+            } else {
+                toast.classList.add('bg-blue-500');
+            }
+            
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
